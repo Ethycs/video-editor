@@ -1,4 +1,6 @@
 # stub.py
+# NOTE: This stub file is CPU bound
+
 import cairo
 import math
 import numpy as np
@@ -8,13 +10,15 @@ import json
 import sys
 
 # Define your constants here
-WIDTH = 800
-HEIGHT = 600
-BG_COLOR = (0.1, 0.1, 0.1)
-SPIRAL_COLOR = (0.9, 0.9, 0.9)
-THROB_SPEED = 2
-ZOOM = 0.5
-SPIN_SPEED = 0.5
+WIDTH, HEIGHT = 512, 512  # Reduced size for faster processing
+SPIRAL_COLOR = (191, 0, 251)  # Green
+BG_COLOR = (0, 0, 0)  # Black
+SPIN_SPEED = 1.0
+THROB_SPEED = 1.0
+THROB_STRENGTH = 1.0
+ZOOM = 1.0
+# TODO Unpickle this data
+
 
 def create_spiral_frame(time):
     surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, WIDTH, HEIGHT)
