@@ -1,0 +1,16 @@
+# Core Libraries
+
+
+
+# Math and Data Manipulation Libraries
+numpy
+
+
+# To Experiment with:
+
+# These are the libraries for generating/capturing video
+mss
+dxcam
+pycairo
+imageio
+imageio-ffmpeg

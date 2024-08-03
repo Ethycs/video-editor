@@ -1,0 +1,6 @@
+/audio/*
+/video/*
+/frame/*
+/output/*
+*.mp4
+*.mp3
