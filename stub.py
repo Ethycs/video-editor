@@ -8,6 +8,7 @@ import multiprocessing as mp
 import imageio
 import json
 import sys
+import pickle
 
 # Define your constants here
 WIDTH, HEIGHT = 512, 512  # Reduced size for faster processing
@@ -17,7 +18,15 @@ SPIN_SPEED = 1.0
 THROB_SPEED = 1.0
 THROB_STRENGTH = 1.0
 ZOOM = 1.0
-# TODO Unpickle this data
+
+def unpickle_parameters(file_path):
+    with open(file_path, 'rb') as f:
+        params = pickle.load(f)
+        
+    globals().update(params)
+    
+    return params
+unpickle_parameters('spiral_params.pkl')
 
 
 def create_spiral_frame(time):
@@ -56,13 +65,15 @@ def create_frame_wrapper(args):
     time, _ = args
     return create_spiral_frame(time)
 
-def create_animation_parallel(output_file, format='mp4', num_processes=None):
+def create_animation_parallel(output_file, format='mp4', duration=6.0, fps=30, num_processes=None):
     if num_processes is None:
         num_processes = mp.cpu_count()
 
     pool = mp.Pool(processes=num_processes)
-    
-    times = [(i * 0.1, i) for i in range(60)]
+    total_frames = int(duration * fps)
+    # times = [(i * 0.1, i) for i in range(60)]
+    times = [(i / fps, i) for i in range(total_frames)]
+
     
     frames = pool.map(create_frame_wrapper, times)
 
@@ -70,11 +81,11 @@ def create_animation_parallel(output_file, format='mp4', num_processes=None):
     pool.join()
 
     if format == 'mp4':
-        with imageio.get_writer(output_file, fps=30) as writer:
+        with imageio.get_writer(output_file, fps=fps) as writer:
             for frame in frames:
                 writer.append_data(frame)
     elif format == 'gif':
-        imageio.mimsave(output_file, frames, fps=30)
+        imageio.mimsave(output_file, frames, fps=fps)
     else:
         raise ValueError("Unsupported format. Choose 'mp4' or 'gif'.")
 
@@ -83,4 +94,6 @@ def create_animation_parallel(output_file, format='mp4', num_processes=None):
 if __name__ == "__main__":
     output_file = sys.argv[1]
     format = sys.argv[2]
-    create_animation_parallel(output_file, format)
+    duration = float(sys.argv[3])
+    fps = int(sys.argv[4])
+    create_animation_parallel(output_file, format, duration, fps)

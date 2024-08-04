@@ -1,11 +1,13 @@
 # Core Libraries
-
+moviepy
 
 
 # Math and Data Manipulation Libraries
 numpy
-
-
+scipy
+matplotlib
+opencv
+opencv-contrib-python
 # To Experiment with:
 
 # Graphical libraries
@@ -16,6 +18,7 @@ pycairo
 
 # These are the libraries for manipulating audio
 pydub
+
 
 # These are the libraries for generating/capturing video
 mss
